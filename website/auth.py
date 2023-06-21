@@ -29,7 +29,7 @@ def login():
         elif form.errors:
             for message in form.errors.values():
                 flash(message[0], category='error')
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, user=current_user)
 
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
