@@ -8,7 +8,7 @@ post = Blueprint('post', __name__)
 @post.route('/thread/<int:thread_id>/get-posts')
 def get_posts(thread_id):
     posts = Post.query.filter_by(thread_id=thread_id).all()
-    post_list = [{'id': post.id, 'content': post.content} for post in posts]
+    post_list = [{'id': post.id, 'content': post.content, 'thread_id': post.thread_id} for post in posts]
     return jsonify(post_list)
 
 
