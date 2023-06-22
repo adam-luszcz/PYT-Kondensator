@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, flash, url_for
 from flask_login import login_required, current_user
 from .models import Topic, Thread, Post, User
+from . import db
+from website.forms import ThreadForm, PostForm
 
 views = Blueprint('views', __name__)
 
@@ -27,10 +29,10 @@ def topic_view(topic_id):
             'created_at': thread.date
         }
         thread_list.append(thread_dict)
-    return render_template('topic.html', user=current_user, threads=thread_list)
+    return render_template('topic.html', user=current_user, threads=thread_list, topic_id=topic_id)
 
 
-@views.route('/thread/<int:thread_id>')
+@views.route('/thread/<int:thread_id>', methods=['GET', 'POST'])
 @login_required
 def thread_view(thread_id):
     thread = Thread.query.get_or_404(thread_id)
@@ -45,4 +47,29 @@ def thread_view(thread_id):
             'created_at': post.date
         }
         post_list.append(post_dict)
-    return render_template('thread.html', user=current_user, posts=post_list)
+
+    form = PostForm()
+    if form.validate_on_submit():
+        new_post = Post(content=form.content.data, user_id=current_user.id, thread_id=thread_id)
+        db.session.add(new_post)
+        db.session.commit()
+        flash('Post created!', category='success')
+        return redirect(url_for('views.thread_view', thread_id=thread_id, thread_title=thread.title))
+    return render_template('thread.html', user=current_user, posts=post_list, form=form, thread_title=thread.title)
+
+
+@views.route('/topic/<int:topic_id>/create-thread', methods=['GET', 'POST'])
+@login_required
+def create_thread(topic_id):
+    form = ThreadForm()
+    if form.validate_on_submit():
+        new_thread = Thread(title=form.title.data, user_id=current_user.id, topic_id=topic_id)
+        db.session.add(new_thread)
+        db.session.flush()
+        first_post = Post(content=form.first_post_content.data, user_id=current_user.id, thread_id=new_thread.id)
+        db.session.add(first_post)
+        db.session.commit()
+        flash('Thread created!', category='success')
+        return redirect(url_for('views.topic_view', topic_id=topic_id))
+    return render_template('create_thread.html', user=current_user, form=form)
+
