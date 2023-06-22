@@ -8,7 +8,7 @@ class Post(db.Model):
     content = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    thread_id = db.Column(db.Integer, db.ForeignKey('thread.id'))
+    thread_id = db.Column(db.Integer, db.ForeignKey('thread.id', ondelete='CASCADE'))
 
 
 class Topic(db.Model):

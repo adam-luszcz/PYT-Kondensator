@@ -12,6 +12,10 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
+    @app.before_request
+    def before_request():
+        db.engine.raw_connection().execute('PRAGMA foreign_keys=ON;')
+
     from .views import views
     from .auth import auth
     from .topic import topic

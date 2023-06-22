@@ -54,8 +54,8 @@ def thread_view(thread_id):
         db.session.add(new_post)
         db.session.commit()
         flash('Post created!', category='success')
-        return redirect(url_for('views.thread_view', thread_id=thread_id, thread_title=thread.title))
-    return render_template('thread.html', user=current_user, posts=post_list, form=form, thread_title=thread.title)
+        return redirect(url_for('views.thread_view', thread=thread))
+    return render_template('thread.html', user=current_user, posts=post_list, form=form, thread=thread)
 
 
 @views.route('/topic/<int:topic_id>/create-thread', methods=['GET', 'POST'])
@@ -73,3 +73,19 @@ def create_thread(topic_id):
         return redirect(url_for('views.topic_view', topic_id=topic_id))
     return render_template('create_thread.html', user=current_user, form=form)
 
+
+@views.route('/thread/<int:thread_id>/delete', methods=['POST'])
+@login_required
+def delete_thread(thread_id):
+    thread = Thread.query.get(thread_id)
+
+    if thread is None:
+        flash('Thread not found.', category='error')
+    elif thread.user_id != current_user.id:
+        flash('You do not have permission to delete this thread.', category='error')
+    else:
+        db.session.delete(thread)
+        db.session.commit()
+        flash('Thread deleted.', category='success')
+
+    return redirect(url_for('views.topic_view', topic_id=thread.topic_id, thread=thread))

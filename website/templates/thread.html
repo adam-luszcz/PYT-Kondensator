@@ -7,7 +7,7 @@
         {% for post in posts %}
             <div class="card mb-4">
                 <div class="card-header">
-                    [{{ thread_title }}]
+                    [{{ thread.title }}]
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ post.content }}</p>
@@ -26,5 +26,10 @@
                 {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>
+            {% if thread.user_id == user.id %}
+                <form action="{{ url_for('views.delete_thread', thread_id=thread.id) }}" method="post">
+                    <button type="submit" class="btn btn-danger mt-2">Delete Thread</button>
+                </form>
+            {% endif %}
     </div>
 {% endblock %}
