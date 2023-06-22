@@ -3,13 +3,18 @@
 {% block title %} Topic {% endblock %}
 
 {% block content %}
-    {% for thread in threads %}
-        <div class="card text-center mt-4">
-            <div class="card-body">
-                <a href="{{ url_for('views.thread_view', thread_id=thread.id) }}">
+    <div class="container mt-5">
+        {% for thread in threads %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    Thread ID: {{ thread.id }}
+                </div>
+                <div class="card-body">
                     <h5 class="card-title">{{ thread.title }}</h5>
-                </a>
+                    <p class="card-text">Created by: {{ thread.author_email }} at {{ thread.created_at }}</p>
+                    <a href="{{ url_for('views.thread_view', thread_id=thread.id) }}" class="btn btn-primary">Go to thread</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}

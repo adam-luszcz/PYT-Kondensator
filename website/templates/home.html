@@ -3,13 +3,18 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
-    {% for topic in topics %}
-        <div class="card text-center mt-4">
-            <div class="card-body">
-                <a href="{{ url_for('views.topic_view', topic_id=topic.id) }}">
-                    <h5 class="card-title">{{ topic.name }}</h5>
-                </a>
+    <div class="container mt-5">
+        {% for topic in topics %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    Topic ID: {{ topic.id }}
+                </div>
+                <div class="card-body">
+                    <a href="{{ url_for('views.topic_view', topic_id=topic.id) }}">
+                        <h5 class="card-title">{{ topic.name }}</h5>
+                    </a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}

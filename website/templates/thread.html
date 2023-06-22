@@ -3,11 +3,19 @@
 {% block title %} Thread {% endblock %}
 
 {% block content %}
-    {% for post in posts %}
-        <div class="card text-center mt-4">
-            <div class="card-body">
-                <p class="card-text">{{ post.content }}</p>
+    <div class="container mt-5">
+        {% for post in posts %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    Post ID: {{ post.id }}
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ post.content }}</p>
+                    <hr>
+                    <p class="text-muted">Posted by: {{ post.author_email }} at {{ post.created_at }}</p>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+        <!-- Tutaj możesz umieścić formularz do dodawania nowego posta -->
+    </div>
 {% endblock %}
