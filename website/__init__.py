@@ -1,6 +1,6 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 
 db = SQLAlchemy()
 DB_NAME = 'database.db'
@@ -27,6 +27,10 @@ def create_app():
     app.register_blueprint(topic, url_prefix='/api/')
     app.register_blueprint(thread, url_prefix='/api/')
     app.register_blueprint(post, url_prefix='/api/')
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html', user=current_user), 404
 
     from .models import User
 
