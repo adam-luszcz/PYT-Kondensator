@@ -6,7 +6,7 @@
     {% for thread in threads %}
         <div class="card text-center mt-4">
             <div class="card-body">
-                <a href="">
+                <a href="{{ url_for('views.thread_view', thread_id=thread.id) }}">
                     <h5 class="card-title">{{ thread.title }}</h5>
                 </a>
             </div>
