@@ -15,10 +15,12 @@ def create_app():
     from .views import views
     from .auth import auth
     from .topic import topic
+    from .thread import thread
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(topic, url_prefix='/api/')
+    app.register_blueprint(thread, url_prefix='/api/')
 
     from .models import User
 
