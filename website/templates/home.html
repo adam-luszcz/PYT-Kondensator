@@ -4,9 +4,11 @@
 
 {% block content %}
     {% for topic in topics %}
-        <div class="card text-center">
-            <div class="card- p-4">
-                {{ topic.name }}
+        <div class="card text-center mt-4">
+            <div class="card-body">
+                <a href="">
+                    <h5 class="card-title">{{ topic.name }}</h5>
+                </a>
             </div>
         </div>
     {% endfor %}
