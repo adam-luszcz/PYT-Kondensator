@@ -32,6 +32,25 @@ def topic_view(topic_id):
     return render_template('topic.html', user=current_user, threads=thread_list, topic_id=topic_id)
 
 
+@views.route('/my-posts')
+@login_required
+def my_posts_view():
+    posts = Post.query.filter_by(user_id=current_user.id).all()
+    post_list = []
+    for post in posts:
+        user = User.query.get(post.user_id)
+        thread = Thread.query.get(post.thread_id)
+        post_dict = {
+            'id': post.id,
+            'content': post.content,
+            'author_email': user.email,
+            'created_at': post.date,
+            'thread_title': thread.title
+        }
+        post_list.append(post_dict)
+    return render_template('my_posts.html', user=current_user, posts=post_list)
+
+
 @views.route('/thread/<int:thread_id>', methods=['GET', 'POST'])
 @login_required
 def thread_view(thread_id):
