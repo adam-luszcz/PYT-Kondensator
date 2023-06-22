@@ -54,7 +54,7 @@ def thread_view(thread_id):
         db.session.add(new_post)
         db.session.commit()
         flash('Post created!', category='success')
-        return redirect(url_for('views.thread_view', thread=thread))
+        return redirect(url_for('views.thread_view', thread_id=thread_id, thread=thread))
     return render_template('thread.html', user=current_user, posts=post_list, form=form, thread=thread)
 
 
